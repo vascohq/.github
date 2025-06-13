@@ -1,0 +1,367 @@
+<!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <title>Vasco - We've Lost the Signal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+        <!-- STYLE  --------------------------------------------------------->
+        <style>
+          :root {
+            --brand-blue: #3280fd; /* Vasco primary */
+            --navy: #172247; /* Header / text */
+            --bg: #f8f3ee; /* page background */
+          }
+    
+          /* Base styles (mobile first) */
+          * {
+            box-sizing: border-box;
+          }
+    
+          body {
+            margin: 0;
+            padding: 2.5rem 7vw;
+            font-family:
+              "Inter",
+              -apple-system,
+              BlinkMacSystemFont,
+              "Segoe UI",
+              Roboto,
+              Helvetica,
+              Arial,
+              sans-serif;
+            background: var(--bg);
+            color: var(--navy);
+            height: 100vh;
+          }
+    
+          .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+          }
+    
+          .logo {
+            width: 112px;
+            height: auto;
+            margin: 0 auto 2rem auto;
+            display: block;
+          }
+    
+          .grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 2rem;
+            text-align: center;
+          }
+    
+          h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            line-height: 0.93;
+            font-weight: 700;
+            margin: 0 0 2rem 0;
+            letter-spacing: -0.02em;
+            text-align: center;
+          }
+    
+          p {
+            font-size: 1.25rem;
+            line-height: 1.4;
+            margin: 0 0 2rem 0;
+            max-width: 100%;
+            text-align: center;
+          }
+    
+          button {
+            appearance: none;
+            background: transparent;
+            border: 2px solid var(--navy);
+            border-radius: 8px;
+            padding: 0.65rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--navy);
+            cursor: pointer;
+            transition:
+              background 0.15s ease,
+              color 0.15s ease;
+            margin: 0 auto;
+            display: block;
+          }
+    
+          button:hover,
+          button:focus {
+            background: var(--navy);
+            color: var(--bg);
+            outline: none;
+          }
+    
+          .hero-wrapper {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 540px;
+            position: relative;
+            overflow: hidden;
+            background: var(--navy);
+            margin: 0 auto;
+          }
+    
+          .hero-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            filter: saturate(120%);
+          }
+    
+          /* Status section */
+          .status-section {
+            margin-top: 2rem;
+            width: 100%;
+          }
+    
+          .status-item {
+            padding: 1rem;
+            border: 1px solid rgba(23, 34, 71, 0.1);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: background-color 0.15s ease;
+          }
+    
+          .status-item:hover {
+            background-color: rgba(23, 34, 71, 0.02);
+          }
+    
+          .status-item:last-child {
+            margin-bottom: 0;
+          }
+    
+          .status-item h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+          }
+    
+          .status-item p {
+            font-size: 0.875rem;
+            margin: 0;
+            color: rgba(23, 34, 71, 0.7);
+          }
+    
+          .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+          }
+    
+          .status-dot.incident {
+            background-color: #ff3b30;
+          }
+    
+          .status-dot.maintenance {
+            background-color: #007aff;
+          }
+    
+          /* Desktop */
+          @media (min-width: 1024px) {
+            body {
+              padding: 4rem 5vw;
+            }
+            .logo {
+              margin: 0 0 2rem 0;
+              display: inline-block;
+            }
+            h1 {
+              margin: 0 0 3rem 0;
+              text-align: left;
+            }
+            p {
+              margin: 0 0 3rem 0;
+              max-width: 28rem;
+              text-align: left;
+            }
+            .grid {
+              grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+              grid-gap: 3rem;
+              align-items: center;
+              text-align: left;
+            }
+            button {
+              margin: 0;
+              display: inline-block;
+            }
+            .hero-wrapper {
+              margin: 0;
+            }
+            .status-item h3 {
+              justify-content: left;
+            }
+          }
+        </style>
+    
+        <!-- Gleap -->
+        <script>
+          !(function () {
+            if (!(window.Gleap = window.Gleap || []).invoked) {
+              window.GleapActions = []
+              const e = new Proxy(
+                { invoked: !0 },
+                {
+                  get: function (e, n) {
+                    return "invoked" === n
+                      ? e.invoked
+                      : function () {
+                          const e = Array.prototype.slice.call(arguments)
+                          window.GleapActions.push({ e: n, a: e })
+                        }
+                  },
+                  set: function (e, n, t) {
+                    return (e[n] = t), !0
+                  },
+                },
+              )
+              window.Gleap = e
+              const n = document.getElementsByTagName("head")[0],
+                t = document.createElement("script")
+              ;(t.type = "text/javascript"),
+                (t.async = !0),
+                (t.src = "https://sdk.gleap.io/latest/index.js"),
+                n.appendChild(t),
+                window.Gleap.initialize("zQiR7bYUcRNu1gSCZ8GJxaVGJD0mEB8q")
+            }
+          })()
+        </script>
+      </head>
+      <body>
+        <div class="container">
+          <img
+            src="data:image/png;base64,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"
+            alt="Vasco"
+            class="logo"
+          />
+    
+          <div class="grid">
+            <section>
+              <h1>We've<br />Lost the Signal</h1>
+              <p>
+                Something on our end isn't working as it should.<br />
+                We're already looking into it—please try again shortly.
+              </p>
+
+              <p>
+                ::CLOUDFLARE_ERROR_500S_BOX::
+              </p>
+              
+              <button onclick="window.location.reload()">Retry</button>
+    
+              <div class="status-section" style="display: none">
+                <div id="status-content"></div>
+              </div>
+            </section>
+    
+            <div class="hero-wrapper">
+              <img
+                src="https://raw.githubusercontent.com/vascohq/.github/main/imagery/ServerError.png"
+              />
+            </div>
+          </div>
+        </div>
+    
+        <script>
+          // Status page integration
+          async function fetchStatus() {
+            try {
+              const response = await fetch(
+                "https://status.vasco.app/api/v1/summary",
+              )
+              const data = await response.json()
+              displayStatus(data)
+            } catch (error) {
+              console.error("Error fetching status:", error)
+              document.getElementById("status-content").innerHTML =
+                "<p>Unable to load status information.</p>"
+            }
+          }
+    
+          function displayStatus(data) {
+            const statusSection = document.querySelector(".status-section")
+            const statusContent = document.getElementById("status-content")
+            const items = []
+    
+            // Add ongoing incidents
+            if (data.ongoing_incidents && data.ongoing_incidents.length > 0) {
+              data.ongoing_incidents.forEach((incident) => {
+                items.push(
+                  '<a href="' + incident.url + '" class="status-item" target="_blank" rel="noopener">' +
+                    '<h3>' +
+                      '<span class="status-dot incident"></span>' +
+                      incident.name +
+                    '</h3>' +
+                    '<p>' + incident.last_update_message + '</p>' +
+                    '<p>Status: ' + incident.status + '</p>' +
+                  '</a>'
+                );                
+              })
+            }
+    
+            // Add in-progress maintenance
+            if (
+              data.in_progress_maintenances &&
+              data.in_progress_maintenances.length > 0
+            ) {
+              data.in_progress_maintenances.forEach((maintenance) => {
+                items.push(
+                  '<a href="' + maintenance.url + '" class="status-item" target="_blank" rel="noopener">' +
+                    '<h3>' +
+                      '<span class="status-dot maintenance"></span>' +
+                      maintenance.name +
+                    '</h3>' +
+                    '<p>' + maintenance.last_update_message + '</p>' +
+                    '<p>Started: ' + new Date(maintenance.started_at).toLocaleString() + '</p>' +
+                  '</a>'
+                );                
+              })
+            }
+    
+            // Add scheduled maintenance
+            if (
+              data.scheduled_maintenances &&
+              data.scheduled_maintenances.length > 0
+            ) {
+              data.scheduled_maintenances.forEach((maintenance) => {
+                items.push(
+                  '<a href="' + maintenance.url + '" class="status-item" target="_blank" rel="noopener">' +
+                    '<h3>' +
+                      '<span class="status-dot maintenance"></span>' +
+                      maintenance.name +
+                    '</h3>' +
+                    '<p>' + maintenance.last_update_message + '</p>' +
+                    '<p>Scheduled: ' + new Date(maintenance.starts_at).toLocaleString() + '</p>' +
+                  '</a>'
+                );                
+              })
+            }
+    
+            if (items.length > 0) {
+              statusContent.innerHTML = items.join("")
+              statusSection.style.display = "block"
+            } else {
+              statusSection.style.display = "none"
+            }
+          }
+    
+          // Fetch status when page loads
+          fetchStatus()
+        </script>
+      </body>
+    </html>
