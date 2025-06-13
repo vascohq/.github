@@ -11,15 +11,18 @@
             --brand-blue: #3280fd; /* Vasco primary */
             --navy: #172247; /* Header / text */
             --bg: #f8f3ee; /* page background */
+            --error-red: #ff3b30;
+            --maintenance-blue: #007aff;
           }
     
-          /* Base styles (mobile first) */
+          /* Base styles */
           * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
           }
     
           body {
-            margin: 0;
             padding: 2.5rem 7vw;
             font-family:
               "Inter",
@@ -32,7 +35,7 @@
               sans-serif;
             background: var(--bg);
             color: var(--navy);
-            height: 100vh;
+            min-height: 100vh;
           }
     
           .container {
@@ -53,7 +56,7 @@
             flex: 1;
             display: grid;
             grid-template-columns: 1fr;
-            grid-gap: 2rem;
+            gap: 2rem;
             text-align: center;
           }
     
@@ -165,11 +168,11 @@
           }
     
           .status-dot.incident {
-            background-color: #ff3b30;
+            background-color: var(--error-red);
           }
     
           .status-dot.maintenance {
-            background-color: #007aff;
+            background-color: var(--maintenance-blue);
           }
     
           /* Desktop */
@@ -192,7 +195,7 @@
             }
             .grid {
               grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-              grid-gap: 3rem;
+              gap: 3rem;
               align-items: center;
               text-align: left;
             }
@@ -272,6 +275,7 @@
             <div class="hero-wrapper">
               <img
                 src="https://raw.githubusercontent.com/vascohq/.github/main/imagery/ServerError.png"
+                alt="Server Error Illustration"
               />
             </div>
           </div>
@@ -301,16 +305,7 @@
             // Add ongoing incidents
             if (data.ongoing_incidents && data.ongoing_incidents.length > 0) {
               data.ongoing_incidents.forEach((incident) => {
-                items.push(
-                  '<a href="' + incident.url + '" class="status-item" target="_blank" rel="noopener">' +
-                    '<h3>' +
-                      '<span class="status-dot incident"></span>' +
-                      incident.name +
-                    '</h3>' +
-                    '<p>' + incident.last_update_message + '</p>' +
-                    '<p>Status: ' + incident.status + '</p>' +
-                  '</a>'
-                );                
+                items.push(createStatusItem(incident, "incident"))
               })
             }
     
@@ -320,16 +315,7 @@
               data.in_progress_maintenances.length > 0
             ) {
               data.in_progress_maintenances.forEach((maintenance) => {
-                items.push(
-                  '<a href="' + maintenance.url + '" class="status-item" target="_blank" rel="noopener">' +
-                    '<h3>' +
-                      '<span class="status-dot maintenance"></span>' +
-                      maintenance.name +
-                    '</h3>' +
-                    '<p>' + maintenance.last_update_message + '</p>' +
-                    '<p>Started: ' + new Date(maintenance.started_at).toLocaleString() + '</p>' +
-                  '</a>'
-                );                
+                items.push(createStatusItem(maintenance, "maintenance", "Started"))
               })
             }
     
@@ -339,16 +325,7 @@
               data.scheduled_maintenances.length > 0
             ) {
               data.scheduled_maintenances.forEach((maintenance) => {
-                items.push(
-                  '<a href="' + maintenance.url + '" class="status-item" target="_blank" rel="noopener">' +
-                    '<h3>' +
-                      '<span class="status-dot maintenance"></span>' +
-                      maintenance.name +
-                    '</h3>' +
-                    '<p>' + maintenance.last_update_message + '</p>' +
-                    '<p>Scheduled: ' + new Date(maintenance.starts_at).toLocaleString() + '</p>' +
-                  '</a>'
-                );                
+                items.push(createStatusItem(maintenance, "maintenance", "Scheduled"))
               })
             }
     
@@ -358,6 +335,23 @@
             } else {
               statusSection.style.display = "none"
             }
+          }
+    
+          function createStatusItem(item, type, dateLabel = "Status") {
+            const date = type === "incident" 
+              ? item.status 
+              : new Date(item[type === "maintenance" ? "started_at" : "starts_at"]).toLocaleString()
+    
+            return `
+              <a href="${item.url}" class="status-item" target="_blank" rel="noopener">
+                <h3>
+                  <span class="status-dot ${type}"></span>
+                  ${item.name}
+                </h3>
+                <p>${item.last_update_message}</p>
+                <p>${dateLabel}: ${date}</p>
+              </a>
+            `
           }
     
           // Fetch status when page loads
